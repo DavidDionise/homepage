@@ -1,15 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { config } from "../config";
-import { Maybe } from "../types/common";
 import { Breakpoint } from "../types/ui";
-import { WeatherContext } from "./WeatherProvider";
+import { DayFacet, TimeContext } from "./MasterOfTime";
 
 export function Sun() {
-  const weatherContext = useContext(WeatherContext);
+  const weatherContext = useContext(TimeContext);
 
   return (
-    <SunContainer className={weatherContext.isNight ? "" : "rotate"}>
+    <SunContainer
+      className={weatherContext.facet == DayFacet.NIGHT ? "" : "rotate"}
+    >
       <StyledSun />
     </SunContainer>
   );
@@ -19,15 +20,6 @@ const rotation = keyframes`
   0% {
     transform: rotate(0deg);
   }
-
-  25% {
-    transform: rotate(0deg);
-  }
-
-  75% {
-    transform: rotate(90deg);
-  }
-
   100% {
     transform: rotate(90deg);
   }
@@ -41,9 +33,9 @@ const SunContainer = styled.div`
   left: -${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] / 2}px;
   z-index: 3;
 
-  &.rotate {
-    animation: ${rotation} ${config.dayLength}s linear;
-  }
+  /* &.rotate {
+    
+  } */
 `;
 
 const StyledSun = styled.div`

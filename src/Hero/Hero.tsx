@@ -1,21 +1,29 @@
-import React, { useContext, useState } from "react";
-import styled from "styled-components";
+import React, { useContext, useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
 import { config } from "../config";
 import { Maybe } from "../types/common";
 import { Breakpoint } from "../types/ui";
 import { Sky } from "./Sky";
 import { SnowFlakes } from "./SnowFlakes";
 import { Sun } from "./Sun";
-import { WeatherContext } from "./WeatherProvider";
-
-const DAY_LENGTH = 3;
-const IMAGE_WIDTH = 1680;
+import { DayFacet, TimeContext } from "./MasterOfTime";
+import cx from "classnames";
 
 export function Hero() {
   const [containerElement, setContainerElement] = useState<Maybe<HTMLElement>>(
     null
   );
-  const weatherContext = useContext(WeatherContext);
+  const [isFirstDay, setIsFirstDay] = useState(true);
+  const weatherContext = useContext(TimeContext);
+  const isDark = [DayFacet.EVENING, DayFacet.NIGHT].includes(
+    weatherContext.facet
+  );
+
+  useEffect(() => {
+    if (isFirstDay && weatherContext.facet == DayFacet.NIGHT) {
+      setIsFirstDay(false);
+    }
+  }, [weatherContext.facet, isFirstDay]);
 
   return (
     <Container ref={setContainerElement}>
@@ -29,13 +37,13 @@ export function Hero() {
       <MountainContainer>
         <StyledImage
           src="mountains.png"
-          className={weatherContext.isNight ? "night" : ""}
+          className={cx({ dark: isDark, firstDay: isFirstDay })}
         />
       </MountainContainer>
       <TreesContainer>
         <StyledImage
           src="trees.png"
-          className={weatherContext.isNight ? "night" : ""}
+          className={cx({ dark: isDark, firstDay: isFirstDay })}
         />
       </TreesContainer>
     </Container>
@@ -73,16 +81,39 @@ const TreesContainer = styled(ImageContainer)`
   z-index: 4;
 `;
 
-type StyledImageProps = {
-  transitionDuration: number;
-};
+const gettingDark = keyframes`
+  from {
+    filter: brightness(100%);
+  }
+
+  to {
+    filter: brightness(50%);
+  }
+`;
+
+const gettingLight = keyframes`
+  from {
+    filter: brightness(50%);
+  }
+
+  to {
+    filter: brightness(100%);
+  }
+`;
 
 const StyledImage = styled.img`
   width: 100%;
-  filter: brightness(100%);
-  transition: filter ${config.dayLength / 2}s;
+  &:not(.firstDay) {
+    animation: ${gettingLight}
+      ${config.time.facetDurations[DayFacet.MORNING] *
+      config.time.hourDuration}s
+      forwards;
+  }
 
-  &.night {
-    filter: brightness(50%);
+  &.dark {
+    animation: ${gettingDark}
+      ${config.time.facetDurations[DayFacet.EVENING] *
+      config.time.hourDuration}s
+      forwards;
   }
 `;

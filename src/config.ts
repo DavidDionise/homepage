@@ -1,3 +1,4 @@
+import { DayFacet } from "./Hero/MasterOfTime";
 import { Breakpoint } from "./types/ui";
 
 const MAX_WIDTH = 1680;
@@ -22,7 +23,16 @@ export type Config = {
     minHorizontalDisplacement: number;
     maxHorizontalDisplacement: number;
   };
-  dayLength: number;
+  time: {
+    hourDuration: number;
+    morningHour: number;
+    facetDurations: {
+      [DayFacet.MORNING]: number;
+      [DayFacet.MID_DAY]: number;
+      [DayFacet.EVENING]: number;
+      [DayFacet.NIGHT]: number;
+    };
+  };
 };
 
 export const config: Config = {
@@ -45,5 +55,14 @@ export const config: Config = {
     minHorizontalDisplacement: 0,
     maxHorizontalDisplacement: 500,
   },
-  dayLength: 6,
+  time: {
+    hourDuration: 0.3,
+    morningHour: 4,
+    facetDurations: {
+      [DayFacet.MORNING]: 6,
+      [DayFacet.MID_DAY]: 4,
+      [DayFacet.EVENING]: 5,
+      [DayFacet.NIGHT]: 9,
+    },
+  },
 };
