@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { config } from "../config";
+import { Maybe } from "../types/common";
 import { Breakpoint } from "../types/ui";
+import { generateDayFacetRange } from "../utils/generateDayFacetRange";
 import { DayFacet, TimeContext } from "./MasterOfTime";
 
 export function Sun() {
@@ -25,6 +27,12 @@ const rotation = keyframes`
   }
 `;
 
+const animationDuration = [
+  generateDayFacetRange(DayFacet.MORNING),
+  generateDayFacetRange(DayFacet.MID_DAY),
+  generateDayFacetRange(DayFacet.EVENING),
+].reduce((acc, range) => acc + range.length, 0);
+
 const SunContainer = styled.div`
   position: absolute;
   top: 720px;
@@ -33,9 +41,10 @@ const SunContainer = styled.div`
   left: -${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] / 2}px;
   z-index: 3;
 
-  /* &.rotate {
-    
-  } */
+  &.rotate {
+    animation: ${rotation} ${animationDuration * config.time.hourDuration}s
+      linear;
+  }
 `;
 
 const StyledSun = styled.div`
