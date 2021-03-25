@@ -9,11 +9,12 @@ export type Config = {
     minHorizontalDisplacement: number;
     maxHorizontalDisplacement: number;
   };
+  dayLength: number;
 };
 
 export const config: Config = {
   snowflakes: {
-    quantity: 100,
+    quantity: 50,
     minSize: 7,
     maxSize: 20,
     minDuration: 4,
@@ -22,4 +23,5 @@ export const config: Config = {
     minHorizontalDisplacement: 0,
     maxHorizontalDisplacement: 500,
   },
+  dayLength: 3,
 };
