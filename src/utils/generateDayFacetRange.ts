@@ -1,5 +1,5 @@
 import { config } from "../config";
-import { DayFacet } from "./../Hero/MasterOfTime";
+import { DayFacet } from "../components/Hero/MasterOfTime";
 import { range } from "./range";
 
 export function generateDayFacetRange(facet: DayFacet): Array<number> {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styled, { Keyframes, keyframes } from "styled-components";
-import { config } from "../config";
-import { Maybe } from "../types/common";
-import { randomInteger, random } from "../utils/random";
-import { range } from "../utils/range";
+import { config } from "../../config";
+import { Maybe } from "../../types/common";
+import { randomInteger, random } from "../../utils/random";
+import { range } from "../../utils/range";
 
 type Props = {
   containerHeight: number;

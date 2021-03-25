@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { config } from "../config";
-import { Maybe } from "../types/common";
-import { Breakpoint } from "../types/ui";
+import { config } from "../../config";
+import { Maybe } from "../../types/common";
+import { Breakpoint } from "../../types/ui";
 import { Sky } from "./Sky";
 import { SnowFlakes } from "./SnowFlakes";
 import { Sun } from "./Sun";

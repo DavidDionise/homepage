@@ -1,8 +1,8 @@
 import { Context, createContext, useContext, useEffect, useState } from "react";
-import { config } from "../config";
-import { DefaultProps } from "../types/common";
-import { generateDayFacetRange } from "../utils/generateDayFacetRange";
-import { range } from "../utils/range";
+import { config } from "../../config";
+import { DefaultProps } from "../../types/common";
+import { generateDayFacetRange } from "../../utils/generateDayFacetRange";
+import { range } from "../../utils/range";
 
 export type TimeContextType = {
   hour: number;

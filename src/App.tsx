@@ -1,8 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { Hero } from "./Hero/Hero";
+import { Hero } from "./components/Hero/Hero";
 import React from "react";
-import { MasterOfTime } from "./Hero/MasterOfTime";
+import { MasterOfTime } from "./components/Hero/MasterOfTime";
 
 function App() {
   return (

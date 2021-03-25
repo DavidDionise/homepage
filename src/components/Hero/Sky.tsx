@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { config } from "../config";
+import { config } from "../../config";
 import { DayFacet, TimeContext } from "./MasterOfTime";
 import cx from "classnames";
 

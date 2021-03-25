@@ -1,4 +1,4 @@
-import { DayFacet } from "./Hero/MasterOfTime";
+import { DayFacet } from "./components/Hero/MasterOfTime";
 import { Breakpoint } from "./types/ui";
 
 const MAX_WIDTH = 1680;
