@@ -1,14 +1,37 @@
-import styled from "styled-components";
+import { useContext, useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
 import { config } from "../config";
+import { Maybe } from "../types/common";
 import { Breakpoint } from "../types/ui";
+import { WeatherContext } from "./WeatherProvider";
 
 export function Sun() {
+  const weatherContext = useContext(WeatherContext);
+
   return (
-    <SunContainer>
-      <Sun />
+    <SunContainer className={weatherContext.isNight ? "" : "rotate"}>
+      <StyledSun />
     </SunContainer>
   );
 }
+
+const rotation = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(0deg);
+  }
+
+  75% {
+    transform: rotate(90deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+  }
+`;
 
 const SunContainer = styled.div`
   position: absolute;
@@ -16,12 +39,10 @@ const SunContainer = styled.div`
   width: ${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] * 2}px;
   height: ${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] * 2}px;
   left: -${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] / 2}px;
-  transform: rotate(0deg);
-  transition: transform 4s;
   z-index: 3;
 
   &.rotate {
-    transform: rotate(90deg);
+    animation: ${rotation} ${config.dayLength}s linear;
   }
 `;
 

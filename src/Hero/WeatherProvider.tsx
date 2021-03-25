@@ -15,13 +15,13 @@ export const WeatherContext: Context<WeatherContextType> = createContext<Weather
 export function WeatherProvider(props: DefaultProps) {
   const [isNight, setIsNight] = useState(false);
 
-  // useEffect(() => {
-  //   const timerId = setTimeout(() => {
-  //     setIsNight(!isNight);
-  //   }, config.dayLength * 1000);
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setIsNight(!isNight);
+    }, config.dayLength * 1000);
 
-  //   return () => clearTimeout(timerId);
-  // }, [isNight]);
+    return () => clearTimeout(timerId);
+  }, [isNight]);
 
   const contextValue: WeatherContextType = {
     isNight,

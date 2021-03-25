@@ -10,13 +10,12 @@ type Props = {
 };
 
 export function SnowFlakes(props: Props) {
-  return (
-    <>
-      {generateSnowFlakes(props.containerHeight).map((Flake, idx) => (
-        <Flake key={idx} />
-      ))}
-    </>
-  );
+  const snowFlakes = useMemo(() => {
+    return generateSnowFlakes(props.containerHeight).map((Flake, idx) => (
+      <Flake key={idx} />
+    ));
+  }, [props.containerHeight]);
+  return <>{snowFlakes}</>;
 }
 
 type StyledFlakeProps = {

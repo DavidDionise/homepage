@@ -36,14 +36,14 @@ export const config: Config = {
     },
   },
   snowflakes: {
-    quantity: 25,
-    minSize: 7,
-    maxSize: 20,
+    quantity: 50,
+    minSize: 3,
+    maxSize: 10,
     minDuration: 4,
     maxDuration: 12,
     numAnimations: 10,
     minHorizontalDisplacement: 0,
     maxHorizontalDisplacement: 500,
   },
-  dayLength: 3,
+  dayLength: 6,
 };
