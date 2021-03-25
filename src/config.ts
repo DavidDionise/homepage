@@ -14,7 +14,7 @@ export type Config = {
 
 export const config: Config = {
   snowflakes: {
-    quantity: 50,
+    quantity: 25,
     minSize: 7,
     maxSize: 20,
     minDuration: 4,

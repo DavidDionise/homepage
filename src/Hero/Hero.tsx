@@ -10,51 +10,52 @@ import { config } from "../config";
 import { Maybe } from "../types/common";
 import { random, randomInteger } from "../utils/random";
 import { range } from "../utils/range";
+import { Sky } from "./Sky";
+import { SnowFlakes } from "./SnowFlakes";
 
 const DAY_LENGTH = 3;
 const IMAGE_WIDTH = 1680;
 
 export function Hero() {
-  const [containerNode, setcontainerNode] = useState<Maybe<HTMLElement>>(null);
+  const [containerElement, setContainerElement] = useState<Maybe<HTMLElement>>(
+    null
+  );
   const [isNightTime, setIsNightTime] = useState(false);
 
-  const SnowFlakes = useMemo(() => {
-    if (containerNode) {
-      const height = containerNode.clientHeight;
-      return generateSnowFlakes(height);
-    } else {
-      return [];
-    }
-  }, [containerNode]);
+  // useEffect(() => {
+  //   const timerId = setTimeout(() => {
+  //     setIsNightTime(!isNightTime);
+  //   }, DAY_LENGTH * 1000 * 2);
 
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setIsNightTime(!isNightTime);
-    }, DAY_LENGTH * 1000 * 2);
-
-    return () => clearTimeout(timerId);
-  }, [isNightTime]);
+  //   return () => clearTimeout(timerId);
+  // }, [isNightTime]);
 
   return (
-    <Container ref={setcontainerNode} className={isNightTime ? "night" : ""}>
-      <SunContainer className={isNightTime ? "rotate" : ""}>
+    <Container ref={setContainerElement}>
+      <SkyContainer>
+        <Sky />
+      </SkyContainer>
+      {/* <SunContainer className={isNightTime ? "rotate" : ""}>
         <Sun />
-      </SunContainer>
-      {/* {SnowFlakes.map((Flake, idx) => (
-        <Flake key={idx} />
-      ))} */}
+      </SunContainer> */}
+      {containerElement ? (
+        <SnowFlakes containerHeight={containerElement.clientHeight} />
+      ) : null}
       <MountainContainer>
-        <StyledImage
-          src="mountains.png"
-          className={isNightTime ? "night" : ""}
-        />
+        <StyledImage src="mountains.png" />
       </MountainContainer>
       <TreesContainer>
-        <StyledImage src="trees.png" className={isNightTime ? "night" : ""} />
+        <StyledImage src="trees.png" />
       </TreesContainer>
     </Container>
   );
 }
+
+const SkyContainer = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+`;
 
 const SunContainer = styled.div`
   position: absolute;
@@ -79,89 +80,12 @@ const Sun = styled.div`
   border-radius: 50%;
 `;
 
-function generateSnowFlakes(parentElementHeight: number) {
-  const {
-    quantity,
-    minSize,
-    maxSize,
-    minDuration,
-    maxDuration,
-  } = config.snowflakes;
-  const animations = generateAnimations(parentElementHeight);
-
-  return range(0, quantity).map(() => {
-    const size = randomInteger(minSize, maxSize);
-    const duration = random(minDuration, maxDuration);
-    const animationIdx = randomInteger(1, animations.length) - 1;
-
-    return function SnowFlake() {
-      const [flakeNode, setFlakeNode] = useState<Maybe<HTMLElement>>(null);
-      const [initialPosition, setInitialPosition] = useState(
-        randomInteger(0, window.innerWidth)
-      );
-
-      useEffect(() => {
-        function handler() {
-          setInitialPosition(randomInteger(0, window.innerWidth));
-        }
-
-        if (flakeNode) {
-          flakeNode.addEventListener("animationiteration", handler);
-        }
-
-        return () => flakeNode?.addEventListener("animationiteration", handler);
-      }, [flakeNode]);
-
-      return (
-        <StyledFlake
-          ref={setFlakeNode}
-          initialPosition={initialPosition}
-          size={size}
-          duration={duration}
-          animation={animations[animationIdx]}
-        />
-      );
-    };
-  });
-}
-
-function generateAnimations(height: number) {
-  const {
-    numAnimations,
-    minHorizontalDisplacement,
-    maxHorizontalDisplacement,
-  } = config.snowflakes;
-  return range(0, numAnimations).map(
-    (idx) =>
-      keyframes`
-        from {
-          transform: translate(0, -20px);
-        }
-
-        to {
-          transform: translate(
-            ${idx % 2 == 0 ? "-" : ""}${randomInteger(
-        minHorizontalDisplacement,
-        maxHorizontalDisplacement
-      )}px,
-            ${height + 40}px
-          )
-        }
-      `
-  );
-}
-
 const Container = styled.div`
   position: relative;
   max-width: 1680px;
   margin: auto;
   height: 884px;
-  transition: background-color ${DAY_LENGTH}s;
-  background-color: hsl(217, 100%, 87%);
-
-  &.night {
-    background-color: hsl(217, 31%, 21%);
-  }
+  z-index: 0;
 `;
 
 const ImageContainer = styled.div`
@@ -177,6 +101,7 @@ const MountainContainer = styled(ImageContainer)`
 
 const TreesContainer = styled(ImageContainer)`
   top: 350px;
+  z-index: 4;
 `;
 
 const StyledImage = styled.img`
@@ -187,24 +112,4 @@ const StyledImage = styled.img`
   &.night {
     filter: brightness(50%);
   }
-`;
-
-type StyledFlakeProps = {
-  initialPosition: number;
-  size: number;
-  duration: number;
-  animation: Keyframes;
-};
-
-const StyledFlake = styled.div`
-  position: absolute;
-  left: ${(p: StyledFlakeProps) => p.initialPosition}px;
-  width: ${(p: StyledFlakeProps) => p.size}px;
-  height: ${(p: StyledFlakeProps) => p.size}px;
-  border-radius: 50%;
-  background-color: white;
-  animation: ${(p: StyledFlakeProps) => p.animation}
-    ${(p: StyledFlakeProps) => p.duration}s infinite linear;
-  z-index: 2;
-  box-shadow: 0 0 8px #fff;
 `;
