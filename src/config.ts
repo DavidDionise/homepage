@@ -1,3 +1,4 @@
+import { CondensationType } from "./components/MasterOfWeather";
 import { DayFacet } from "./components/Hero/MasterOfTime";
 import { Breakpoint } from "./types/ui";
 
@@ -19,15 +20,9 @@ export type Config = {
     };
     maxWidth: number;
   };
-  snowflakes: {
-    quantity: number;
-    minSize: number;
-    maxSize: number;
-    minDuration: number;
-    maxDuration: number;
-    numAnimations: number;
-    minHorizontalDisplacement: number;
-    maxHorizontalDisplacement: number;
+  condensation: {
+    [CondensationType.RAIN]: CondensationConfig;
+    [CondensationType.SNOW]: CondensationConfig;
   };
   time: {
     hourDuration: number;
@@ -57,15 +52,29 @@ export const config: Config = {
       [Breakpoint.DESKTOP_LARGE]: MAX_WIDTH,
     },
   },
-  snowflakes: {
-    quantity: 50,
-    minSize: 3,
-    maxSize: 10,
-    minDuration: 4,
-    maxDuration: 12,
-    numAnimations: 10,
-    minHorizontalDisplacement: 0,
-    maxHorizontalDisplacement: 500,
+  condensation: {
+    [CondensationType.SNOW]: {
+      minQuantity: 20,
+      maxQuantity: 50,
+      minSize: 3,
+      maxSize: 10,
+      minFallDuration: 4,
+      maxFallDuration: 12,
+      numAnimations: 10,
+      minHorizontalDisplacement: 0,
+      maxHorizontalDisplacement: 500,
+    },
+    [CondensationType.RAIN]: {
+      minQuantity: 20,
+      maxQuantity: 50,
+      minSize: 3,
+      maxSize: 10,
+      minFallDuration: 4,
+      maxFallDuration: 12,
+      numAnimations: 10,
+      minHorizontalDisplacement: 0,
+      maxHorizontalDisplacement: 500,
+    },
   },
   time: {
     hourDuration: 3,
@@ -77,4 +86,16 @@ export const config: Config = {
       [DayFacet.NIGHT]: 9,
     },
   },
+};
+
+type CondensationConfig = {
+  minQuantity: number;
+  maxQuantity: number;
+  minSize: number;
+  maxSize: number;
+  minFallDuration: number;
+  maxFallDuration: number;
+  numAnimations: number;
+  minHorizontalDisplacement: number;
+  maxHorizontalDisplacement: number;
 };
