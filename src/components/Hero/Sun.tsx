@@ -7,25 +7,11 @@ import { generateDayFacetRange } from "../../utils/generateDayFacetRange";
 import { DayFacet, TimeContext } from "./MasterOfTime";
 
 export function Sun() {
-  const weatherContext = useContext(TimeContext);
-
-  return (
-    <SunContainer
-      className={weatherContext.facet == DayFacet.NIGHT ? "" : "rotate"}
-    >
-      <StyledSun />
-    </SunContainer>
-  );
+  useEffect(() => {
+    console.log(">> hit");
+  });
+  return <StyledSun />;
 }
-
-const rotation = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(90deg);
-  }
-`;
 
 const animationDuration = [
   generateDayFacetRange(DayFacet.MORNING),
@@ -33,24 +19,28 @@ const animationDuration = [
   generateDayFacetRange(DayFacet.EVENING),
 ].reduce((acc, range) => acc + range.length, 0);
 
-const SunContainer = styled.div`
-  position: absolute;
-  top: 720px;
-  width: ${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] * 2}px;
-  height: ${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] * 2}px;
-  left: -${config.ui.heroImageWidths[Breakpoint.DESKTOP_LARGE] / 2}px;
-  z-index: 3;
+const sunRotation = keyframes`
+  from {
+    transform: rotate(-30deg) translateY(-1000px) translateX(50%);
+  }
 
-  &.rotate {
-    animation: ${rotation} ${animationDuration * config.time.hourDuration}s
-      linear;
+  to {
+    transform: rotate(30deg) translateY(-1000px) translateX(50%);
   }
 `;
 
 const StyledSun = styled.div`
   width: 50px;
   height: 50px;
-  background-color: yellow;
-  box-shadow: 0 0 8px yellow;
+  background-color: hsl(51.12244897959183, 100%, 61.568627450980394%);
+  box-shadow: 0 0 8px hsl(51.12244897959183, 100%, 61.568627450980394%);
   border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  bottom: -1000px;
+  transform: rotate(-30deg) translateY(-1000px) translateX(50%);
+
+  &.rotate {
+    animation: ${sunRotation} 5s;
+  }
 `;

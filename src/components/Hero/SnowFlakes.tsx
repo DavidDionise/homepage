@@ -19,23 +19,16 @@ export function SnowFlakes(props: Props) {
 }
 
 type StyledFlakeProps = {
-  initialPosition: number;
-  size: number;
   duration: number;
   animation: Keyframes;
-  zIndex: number;
 };
 
 const StyledFlake = styled.div`
   position: absolute;
-  left: ${(p: StyledFlakeProps) => p.initialPosition}px;
-  width: ${(p: StyledFlakeProps) => p.size}px;
-  height: ${(p: StyledFlakeProps) => p.size}px;
   border-radius: 50%;
   background-color: white;
   animation: ${(p: StyledFlakeProps) => p.animation}
     ${(p: StyledFlakeProps) => p.duration}s infinite linear;
-  z-index: ${(p: StyledFlakeProps) => p.zIndex};
   box-shadow: 0 0 8px #fff;
 `;
 
@@ -76,11 +69,14 @@ function generateSnowFlakes(containerHeight: number) {
       return (
         <StyledFlake
           ref={setFlakeNode}
-          initialPosition={initialPosition}
-          size={size}
-          duration={duration}
           animation={animations[animationIdx]}
-          zIndex={zIndex}
+          duration={duration}
+          style={{
+            left: `${initialPosition}px`,
+            width: `${size}px`,
+            height: `${size}px`,
+            zIndex: zIndex,
+          }}
         />
       );
     };

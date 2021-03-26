@@ -5,6 +5,12 @@ const MAX_WIDTH = 1680;
 
 export type Config = {
   ui: {
+    breakpoints: {
+      [Breakpoint.MOBILE]: number;
+      [Breakpoint.TABLET]: number;
+      [Breakpoint.DESKTOP_SMALL]: number;
+      [Breakpoint.DESKTOP_LARGE]: number;
+    };
     heroImageWidths: {
       [Breakpoint.MOBILE]: number;
       [Breakpoint.TABLET]: number;
@@ -38,6 +44,12 @@ export type Config = {
 export const config: Config = {
   ui: {
     maxWidth: MAX_WIDTH,
+    breakpoints: {
+      [Breakpoint.MOBILE]: 414,
+      [Breakpoint.TABLET]: 768,
+      [Breakpoint.DESKTOP_SMALL]: 1024,
+      [Breakpoint.DESKTOP_LARGE]: 1440,
+    },
     heroImageWidths: {
       [Breakpoint.MOBILE]: 500,
       [Breakpoint.TABLET]: 800,
@@ -56,7 +68,7 @@ export const config: Config = {
     maxHorizontalDisplacement: 500,
   },
   time: {
-    hourDuration: 0.3,
+    hourDuration: 3,
     morningHour: 4,
     facetDurations: {
       [DayFacet.MORNING]: 6,
