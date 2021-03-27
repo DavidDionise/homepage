@@ -7,6 +7,7 @@ import { Sky } from "./Sky";
 import { SnowFlakes } from "./SnowFlakes";
 import { DayFacet, TimeContext } from "./MasterOfTime";
 import cx from "classnames";
+import { useWindowResizeListener } from "../../hooks/useWindowResizeListener";
 
 export function Hero() {
   const [containerElement, setContainerElement] = useState<Maybe<HTMLElement>>(
@@ -29,9 +30,10 @@ export function Hero() {
       <SkyContainer>
         <Sky />
       </SkyContainer>
-      {containerElement ? (
+      {/* {containerElement ? (
         <SnowFlakes containerHeight={containerElement.clientHeight} />
-      ) : null}
+      ) : null} */}
+      <SnowFlakes containerHeight={884} />
       <MountainContainer>
         <StyledImage
           src="mountains.png"

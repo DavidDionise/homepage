@@ -77,7 +77,7 @@ export const config: Config = {
     },
   },
   time: {
-    hourDuration: 3,
+    hourDuration: 0.5,
     morningHour: 4,
     facetDurations: {
       [DayFacet.MORNING]: 6,

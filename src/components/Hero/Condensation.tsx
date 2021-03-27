@@ -1,29 +1,29 @@
-import React, {
-  ForwardRefExoticComponent,
-  ReactElement,
-  RefAttributes,
-  RefCallback,
-  RefObject,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import styled, { Keyframes, keyframes } from "styled-components";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
+import styled, {
+  Keyframes,
+  keyframes,
+  StyledComponent,
+} from "styled-components";
 import { config } from "../../config";
 import { Maybe } from "../../types/common";
 import { randomInteger, random } from "../../utils/random";
 import { range } from "../../utils/range";
 import { CondensationType } from "../MasterOfWeather";
 
+type StyledComponentProps = {
+  duration: number;
+  animation: Keyframes;
+  delay: number;
+  [key: string]: any;
+};
+
 type Props = {
   containerHeight: number;
   type: CondensationType;
-  css: string;
-};
-
-type StyledDropProps = {
-  duration: number;
-  animation: Keyframes;
+  styledComponent: StyledComponent<
+    React.FunctionComponent<StyledComponentProps>,
+    {}
+  >;
 };
 
 export function Condensation(props: Props) {
@@ -31,16 +31,63 @@ export function Condensation(props: Props) {
     return generateCondensation(
       props.containerHeight,
       props.type,
-      props.css
-    ).map((Drop, idx) => <Drop key={idx} />);
-  }, [props.containerHeight]);
+      props.styledComponent
+    );
+  }, []);
   return <>{snowFlakes}</>;
+}
+
+type DropProps = {
+  animation: Keyframes;
+  duration: number;
+  size: number;
+  styledComponent: StyledComponent<
+    React.FunctionComponent<StyledComponentProps>,
+    {}
+  >;
+};
+
+function Drop(props: DropProps) {
+  const [dropNode, setDropNode] = useState<Maybe<HTMLElement>>(null);
+  const [initialPosition, setInitialPosition] = useState(
+    randomInteger(0, window.innerWidth)
+  );
+  const zIndex = randomInteger(1, 6);
+
+  useEffect(() => {
+    function handler() {
+      setInitialPosition(randomInteger(0, window.innerWidth));
+    }
+
+    if (dropNode) {
+      dropNode.addEventListener("animationiteration", handler);
+    }
+
+    return () => dropNode?.addEventListener("animationiteration", handler);
+  }, [dropNode]);
+
+  return (
+    <props.styledComponent
+      ref={setDropNode}
+      animation={props.animation}
+      duration={props.duration}
+      style={{
+        left: `${initialPosition}px`,
+        width: `${props.size}px`,
+        height: `${props.size}px`,
+        zIndex: zIndex,
+      }}
+    />
+  );
 }
 
 function generateCondensation(
   containerHeight: number,
   type: CondensationType,
-  css: string
+  styledComponent: StyledComponent<
+    React.FunctionComponent<StyledComponentProps>,
+    {}
+  >
 ) {
   const {
     minQuantity,
@@ -51,52 +98,21 @@ function generateCondensation(
     maxFallDuration,
   } = config.condensation[type];
   const animations = generateAnimations(containerHeight, type);
+  const quantity = randomInteger(minQuantity, maxQuantity);
 
-  const StyledDrop = styled.div`
-    ${css}
-    position: absolute;
-    animation: ${(p: StyledDropProps) => p.animation}
-      ${(p: StyledDropProps) => p.duration}s infinite linear;
-  `;
-
-  return range(minQuantity, maxQuantity).map(() => {
+  return range(0, quantity).map((_, idx) => {
     const size = randomInteger(minSize, maxSize);
     const duration = random(minFallDuration, maxFallDuration);
     const animationIdx = randomInteger(1, animations.length) - 1;
-
-    return function Drop() {
-      const [dropNode, setDropNode] = useState<Maybe<HTMLElement>>(null);
-      const [initialPosition, setInitialPosition] = useState(
-        randomInteger(0, window.innerWidth)
-      );
-      const zIndex = randomInteger(1, 6);
-
-      useEffect(() => {
-        function handler() {
-          setInitialPosition(randomInteger(0, window.innerWidth));
-        }
-
-        if (dropNode) {
-          dropNode.addEventListener("animationiteration", handler);
-        }
-
-        return () => dropNode?.addEventListener("animationiteration", handler);
-      }, [dropNode]);
-
-      return (
-        <StyledDrop
-          ref={setDropNode}
-          animation={animations[animationIdx]}
-          duration={duration}
-          style={{
-            left: `${initialPosition}px`,
-            width: `${size}px`,
-            height: `${size}px`,
-            zIndex: zIndex,
-          }}
-        />
-      );
-    };
+    return (
+      <Drop
+        key={idx}
+        animation={animations[animationIdx]}
+        size={size}
+        duration={duration}
+        styledComponent={styledComponent}
+      />
+    );
   });
 }
 
