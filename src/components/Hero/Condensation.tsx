@@ -1,16 +1,13 @@
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
-import styled, {
-  Keyframes,
-  keyframes,
-  StyledComponent,
-} from "styled-components";
+import React, { useEffect, useMemo, useState } from "react";
+import { Keyframes, keyframes, StyledComponent } from "styled-components";
+import { ConditionalType } from "typescript";
 import { config } from "../../config";
 import { Maybe } from "../../types/common";
 import { randomInteger, random } from "../../utils/random";
 import { range } from "../../utils/range";
-import { CondensationType } from "../MasterOfWeather";
+import { CondensationType, WeatherType } from "./MasterOfWeather";
 
-type StyledComponentProps = {
+export type StyledCondensationProps = {
   duration: number;
   animation: Keyframes;
   delay: number;
@@ -21,7 +18,7 @@ type Props = {
   containerHeight: number;
   type: CondensationType;
   styledComponent: StyledComponent<
-    React.FunctionComponent<StyledComponentProps>,
+    React.FunctionComponent<StyledCondensationProps>,
     {}
   >;
 };
@@ -33,16 +30,19 @@ export function Condensation(props: Props) {
       props.type,
       props.styledComponent
     );
-  }, []);
+  }, [props.containerHeight, props.type, props.styledComponent]);
   return <>{snowFlakes}</>;
 }
 
 type DropProps = {
   animation: Keyframes;
   duration: number;
-  size: number;
+  width: number;
+  height: number;
+  delay: number;
+  type: CondensationType;
   styledComponent: StyledComponent<
-    React.FunctionComponent<StyledComponentProps>,
+    React.FunctionComponent<StyledCondensationProps>,
     {}
   >;
 };
@@ -56,7 +56,7 @@ function Drop(props: DropProps) {
 
   useEffect(() => {
     function handler() {
-      setInitialPosition(randomInteger(0, window.innerWidth));
+      setInitialPosition(random(0, window.innerWidth));
     }
 
     if (dropNode) {
@@ -71,11 +71,13 @@ function Drop(props: DropProps) {
       ref={setDropNode}
       animation={props.animation}
       duration={props.duration}
+      delay={props.delay}
       style={{
         left: `${initialPosition}px`,
-        width: `${props.size}px`,
-        height: `${props.size}px`,
+        width: `${props.width}px`,
+        height: `${props.height}px`,
         zIndex: zIndex,
+        transform: `translateY(-${props.height + 20}px`,
       }}
     />
   );
@@ -85,31 +87,37 @@ function generateCondensation(
   containerHeight: number,
   type: CondensationType,
   styledComponent: StyledComponent<
-    React.FunctionComponent<StyledComponentProps>,
+    React.FunctionComponent<StyledCondensationProps>,
     {}
   >
 ) {
   const {
+    dimensions,
     minQuantity,
     maxQuantity,
-    minSize,
-    maxSize,
     minFallDuration,
     maxFallDuration,
+    maxDelay,
   } = config.condensation[type];
   const animations = generateAnimations(containerHeight, type);
   const quantity = randomInteger(minQuantity, maxQuantity);
 
   return range(0, quantity).map((_, idx) => {
-    const size = randomInteger(minSize, maxSize);
+    const dimensionsIdx = randomInteger(0, dimensions.length - 1);
+    const { width, height } = dimensions[dimensionsIdx];
     const duration = random(minFallDuration, maxFallDuration);
     const animationIdx = randomInteger(1, animations.length) - 1;
+    const delay = random(0, idx % maxDelay);
+
     return (
       <Drop
         key={idx}
         animation={animations[animationIdx]}
-        size={size}
+        width={width}
+        height={height}
         duration={duration}
+        type={type}
+        delay={delay}
         styledComponent={styledComponent}
       />
     );
@@ -123,14 +131,14 @@ function generateAnimations(containerHeight: number, type: CondensationType) {
     maxHorizontalDisplacement,
   } = config.condensation[type];
   return range(0, numAnimations).map((idx) => {
-    const endingX = `${idx % 2 == 0 ? "-" : ""}${randomInteger(
+    const endingX = `${idx % 2 === 0 ? "-" : ""}${randomInteger(
       minHorizontalDisplacement,
       maxHorizontalDisplacement
     )}px`;
 
     return keyframes`
         from {
-          transform: translate(0, -20px);
+          transform: translate(0, -150px);
         }
 
         to {

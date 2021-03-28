@@ -15,7 +15,7 @@ export enum DayFacet {
 }
 
 const INITIAL_HOUR = 9;
-const INITIAL_FACET = DayFacet.MORNING;
+const INITIAL_FACET = DayFacet.NIGHT;
 
 export const TimeContext: Context<TimeContextType> = createContext<TimeContextType>(
   {
@@ -51,13 +51,6 @@ export function MasterOfTime(props: DefaultProps) {
 }
 
 function generateDayFacet(hour: number): DayFacet {
-  const value = [
-    generateDayFacetRange(DayFacet.MORNING),
-    generateDayFacetRange(DayFacet.MID_DAY),
-    generateDayFacetRange(DayFacet.EVENING),
-    generateDayFacetRange(DayFacet.NIGHT),
-  ];
-
   switch (true) {
     case generateDayFacetRange(DayFacet.MORNING).includes(hour):
       return DayFacet.MORNING;

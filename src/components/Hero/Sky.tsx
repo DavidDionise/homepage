@@ -12,7 +12,7 @@ export function Sky() {
   );
 
   useEffect(() => {
-    if (isFirstDay && weatherContext.facet == DayFacet.NIGHT) {
+    if (isFirstDay && weatherContext.facet === DayFacet.NIGHT) {
       setIsFirstDay(false);
     }
   }, [weatherContext.facet, isFirstDay]);

@@ -4,10 +4,11 @@ import { config } from "../../config";
 import { Maybe } from "../../types/common";
 import { Breakpoint } from "../../types/ui";
 import { Sky } from "./Sky";
-import { SnowFlakes } from "./SnowFlakes";
+import { Snow } from "./Snow";
 import { DayFacet, TimeContext } from "./MasterOfTime";
 import cx from "classnames";
-import { useWindowResizeListener } from "../../hooks/useWindowResizeListener";
+import { Rain } from "./Rain";
+import { Weather } from "../Weather";
 
 export function Hero() {
   const [containerElement, setContainerElement] = useState<Maybe<HTMLElement>>(
@@ -20,7 +21,7 @@ export function Hero() {
   );
 
   useEffect(() => {
-    if (isFirstDay && weatherContext.facet == DayFacet.NIGHT) {
+    if (isFirstDay && weatherContext.facet === DayFacet.NIGHT) {
       setIsFirstDay(false);
     }
   }, [weatherContext.facet, isFirstDay]);
@@ -30,10 +31,9 @@ export function Hero() {
       <SkyContainer>
         <Sky />
       </SkyContainer>
-      {/* {containerElement ? (
-        <SnowFlakes containerHeight={containerElement.clientHeight} />
-      ) : null} */}
-      <SnowFlakes containerHeight={884} />
+      {containerElement ? (
+        <Weather containerHeight={containerElement.clientHeight} />
+      ) : null}
       <MountainContainer>
         <StyledImage
           src="mountains.png"

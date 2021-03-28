@@ -1,6 +1,7 @@
-import { CondensationType } from "./components/MasterOfWeather";
+import { CondensationType } from "./components/Hero/MasterOfWeather";
 import { DayFacet } from "./components/Hero/MasterOfTime";
 import { Breakpoint } from "./types/ui";
+import { range } from "./utils/range";
 
 const MAX_WIDTH = 1680;
 
@@ -54,26 +55,31 @@ export const config: Config = {
   },
   condensation: {
     [CondensationType.SNOW]: {
-      minQuantity: 20,
-      maxQuantity: 50,
-      minSize: 3,
-      maxSize: 10,
+      minQuantity: 70,
+      maxQuantity: 90,
+      dimensions: range(3, 8).map((n) => ({ width: n, height: n })),
       minFallDuration: 4,
       maxFallDuration: 12,
       numAnimations: 10,
       minHorizontalDisplacement: 0,
-      maxHorizontalDisplacement: 500,
+      maxHorizontalDisplacement: 300,
+      maxDelay: 5,
     },
     [CondensationType.RAIN]: {
-      minQuantity: 20,
-      maxQuantity: 50,
-      minSize: 3,
-      maxSize: 10,
-      minFallDuration: 4,
-      maxFallDuration: 12,
-      numAnimations: 10,
+      minQuantity: 150,
+      maxQuantity: 140,
+      dimensions: [
+        { width: 0.3, height: 20 },
+        { width: 0.4, height: 30 },
+        { width: 0.6, height: 40 },
+        { width: 0.6, height: 50 },
+      ],
+      minFallDuration: 1,
+      maxFallDuration: 1.5,
+      numAnimations: 5,
       minHorizontalDisplacement: 0,
-      maxHorizontalDisplacement: 500,
+      maxHorizontalDisplacement: 0,
+      maxDelay: 1,
     },
   },
   time: {
@@ -91,11 +97,16 @@ export const config: Config = {
 type CondensationConfig = {
   minQuantity: number;
   maxQuantity: number;
-  minSize: number;
-  maxSize: number;
+  dimensions: Array<CondensationDimensions>;
   minFallDuration: number;
   maxFallDuration: number;
   numAnimations: number;
   minHorizontalDisplacement: number;
   maxHorizontalDisplacement: number;
+  maxDelay: number;
+};
+
+type CondensationDimensions = {
+  width: number;
+  height: number;
 };
