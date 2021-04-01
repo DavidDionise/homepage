@@ -19,7 +19,6 @@ export function Snow(props: WeatherProducerProps) {
 const StyledFlake = styled.div`
   position: absolute;
   border-radius: 50%;
-  background-color: white;
   animation: ${(p: StyledCondensationProps) => p.animation}
     ${(p: StyledCondensationProps) => p.duration}s infinite linear
     ${(p: StyledCondensationProps) => p.delay}s;

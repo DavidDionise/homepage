@@ -22,27 +22,27 @@ export function Sky() {
 
 const gettingDark = keyframes`
   from {
-    background-color: hsl(217, 100%, 87%);
+    background-color: ${config.ui.colors.secondary.light};
   }
 
   to {
-    background-color: hsl(217, 31%, 21%);
+    background-color: ${config.ui.colors.secondary.dark};
   }
 `;
 
 const gettingLight = keyframes`
   from {
-    background-color: hsl(217, 31%, 21%);
+    background-color: ${config.ui.colors.secondary.dark};
   }
 
   to {
-    background-color: hsl(217, 100%, 87%);
+    background-color: ${config.ui.colors.secondary.light};
   }
 `;
 
 const StyledSky = styled.div`
   height: 100%;
-  background-color: hsl(217, 100%, 87%);
+  background-color: ${config.ui.colors.secondary.light};
   &:not(.firstDay) {
     animation: ${gettingLight}
       ${config.time.facetDurations[DayFacet.MORNING] *

@@ -2,7 +2,7 @@ import React from "react";
 import { useContext, useEffect, useState } from "react";
 import { DefaultProps } from "../../types/common";
 import { randomInteger } from "../../utils/random";
-import { TimeContext } from "./MasterOfTime";
+import { DayFacet, TimeContext } from "./MasterOfTime";
 
 export enum WeatherType {
   NONE,
@@ -23,19 +23,30 @@ type WeatherContextType = {
   weatherType: WeatherType;
 };
 
+const INITIAL_WEATHER_TYPE = WeatherType.NONE;
+
 export const WeatherContext: React.Context<WeatherContextType> = React.createContext<WeatherContextType>(
   {
-    weatherType: WeatherType.NONE,
+    weatherType: INITIAL_WEATHER_TYPE,
   }
 );
 
 export function MasterOfWeather(props: DefaultProps) {
   const timeContext = useContext(TimeContext);
-  const [weatherType, setWeatherType] = useState(WeatherType.NONE);
+  const [weatherType, setWeatherType] = useState(INITIAL_WEATHER_TYPE);
 
   useEffect(() => {
-    const nextWeather = selectWeatherType();
-    setWeatherType(nextWeather);
+    switch (timeContext.facet) {
+      case DayFacet.NIGHT:
+        setWeatherType(WeatherType.RAIN);
+        break;
+      case DayFacet.MID_DAY:
+      case DayFacet.EVENING:
+        setWeatherType(WeatherType.SNOW);
+        break;
+      default:
+        setWeatherType(WeatherType.NONE);
+    }
   }, [timeContext.facet]);
 
   return (
@@ -45,14 +56,14 @@ export function MasterOfWeather(props: DefaultProps) {
   );
 }
 
-function selectWeatherType() {
-  switch (randomInteger(0, 2)) {
-    case 0:
-      return WeatherType.NONE;
-    case 1:
+function selectWeatherType(weatherType: WeatherType) {
+  switch (weatherType) {
+    case WeatherType.NONE:
       return WeatherType.RAIN;
-    case 2:
+    case WeatherType.RAIN:
       return WeatherType.SNOW;
+    case WeatherType.SNOW:
+      return WeatherType.NONE;
     default:
       throw new Error("Invalid index for weather selction");
   }

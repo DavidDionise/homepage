@@ -20,6 +20,22 @@ export type Config = {
       [Breakpoint.DESKTOP_LARGE]: number;
     };
     maxWidth: number;
+    colors: {
+      primary: {
+        light: string;
+        med: string;
+        dark: string;
+      };
+      secondary: {
+        light: string;
+        med: string;
+        dark: string;
+      };
+    };
+    fonts: {
+      title: string;
+      regular: string;
+    };
   };
   condensation: {
     [CondensationType.RAIN]: CondensationConfig;
@@ -27,6 +43,7 @@ export type Config = {
   };
   time: {
     hourDuration: number;
+    weatherTransitionDuration: number;
     morningHour: number;
     facetDurations: {
       [DayFacet.MORNING]: number;
@@ -47,10 +64,26 @@ export const config: Config = {
       [Breakpoint.DESKTOP_LARGE]: 1440,
     },
     heroImageWidths: {
-      [Breakpoint.MOBILE]: 500,
+      [Breakpoint.MOBILE]: 600,
       [Breakpoint.TABLET]: 800,
       [Breakpoint.DESKTOP_SMALL]: 1200,
       [Breakpoint.DESKTOP_LARGE]: MAX_WIDTH,
+    },
+    colors: {
+      primary: {
+        dark: "hsl(217deg, 31%, 21%)",
+        med: "hsl(224deg 37% 29%)",
+        light: "hsl(217deg, 100%, 87%)",
+      },
+      secondary: {
+        light: "hsl(308, 96%, 90%)",
+        med: "hsl(308, 96%, 41%)",
+        dark: "hsl(308, 86%, 20%)",
+      },
+    },
+    fonts: {
+      title: "Bungee Hairline",
+      regular: "Roboto",
     },
   },
   condensation: {
@@ -64,6 +97,10 @@ export const config: Config = {
       minHorizontalDisplacement: 0,
       maxHorizontalDisplacement: 300,
       maxDelay: 5,
+      minLightness: 90,
+      maxLightness: 100,
+      minOpacity: 0.85,
+      maxOpacity: 1,
     },
     [CondensationType.RAIN]: {
       minQuantity: 150,
@@ -74,27 +111,32 @@ export const config: Config = {
         { width: 0.6, height: 40 },
         { width: 0.6, height: 50 },
       ],
-      minFallDuration: 1,
-      maxFallDuration: 1.5,
-      numAnimations: 5,
+      minFallDuration: 1.5,
+      maxFallDuration: 2.5,
+      numAnimations: 20,
       minHorizontalDisplacement: 0,
       maxHorizontalDisplacement: 0,
-      maxDelay: 1,
+      maxDelay: 2,
+      minLightness: 75,
+      maxLightness: 95,
+      minOpacity: 0.1,
+      maxOpacity: 0.6,
     },
   },
   time: {
-    hourDuration: 0.5,
+    hourDuration: 2.5,
+    weatherTransitionDuration: 5,
     morningHour: 4,
     facetDurations: {
-      [DayFacet.MORNING]: 6,
-      [DayFacet.MID_DAY]: 4,
-      [DayFacet.EVENING]: 5,
+      [DayFacet.MORNING]: 3,
+      [DayFacet.MID_DAY]: 5,
+      [DayFacet.EVENING]: 7,
       [DayFacet.NIGHT]: 9,
     },
   },
 };
 
-type CondensationConfig = {
+export type CondensationConfig = {
   minQuantity: number;
   maxQuantity: number;
   dimensions: Array<CondensationDimensions>;
@@ -104,6 +146,14 @@ type CondensationConfig = {
   minHorizontalDisplacement: number;
   maxHorizontalDisplacement: number;
   maxDelay: number;
+  minHue?: number;
+  maxHue?: number;
+  minSaturation?: number;
+  maxSaturation?: number;
+  minLightness?: number;
+  maxLightness?: number;
+  minOpacity?: number;
+  maxOpacity?: number;
 };
 
 type CondensationDimensions = {

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Keyframes, keyframes, StyledComponent } from "styled-components";
 import { ConditionalType } from "typescript";
-import { config } from "../../config";
+import { CondensationConfig, config } from "../../config";
 import { Maybe } from "../../types/common";
 import { randomInteger, random } from "../../utils/random";
 import { range } from "../../utils/range";
@@ -24,14 +24,14 @@ type Props = {
 };
 
 export function Condensation(props: Props) {
-  const snowFlakes = useMemo(() => {
+  const condensation = useMemo(() => {
     return generateCondensation(
       props.containerHeight,
       props.type,
       props.styledComponent
     );
   }, [props.containerHeight, props.type, props.styledComponent]);
-  return <>{snowFlakes}</>;
+  return <>{condensation}</>;
 }
 
 type DropProps = {
@@ -49,14 +49,13 @@ type DropProps = {
 
 function Drop(props: DropProps) {
   const [dropNode, setDropNode] = useState<Maybe<HTMLElement>>(null);
-  const [initialPosition, setInitialPosition] = useState(
+  const [initialXPosition, setInitialXPosition] = useState(
     randomInteger(0, window.innerWidth)
   );
-  const zIndex = randomInteger(1, 6);
 
   useEffect(() => {
     function handler() {
-      setInitialPosition(random(0, window.innerWidth));
+      setInitialXPosition(random(0, window.innerWidth));
     }
 
     if (dropNode) {
@@ -66,6 +65,9 @@ function Drop(props: DropProps) {
     return () => dropNode?.addEventListener("animationiteration", handler);
   }, [dropNode]);
 
+  const backgroundColor = generateHsl(config.condensation[props.type]);
+  const opacity = generateOpacity(config.condensation[props.type]);
+
   return (
     <props.styledComponent
       ref={setDropNode}
@@ -73,11 +75,12 @@ function Drop(props: DropProps) {
       duration={props.duration}
       delay={props.delay}
       style={{
-        left: `${initialPosition}px`,
+        left: `${initialXPosition}px`,
         width: `${props.width}px`,
         height: `${props.height}px`,
-        zIndex: zIndex,
         transform: `translateY(-${props.height + 20}px`,
+        backgroundColor: backgroundColor,
+        opacity: opacity,
       }}
     />
   );
@@ -107,7 +110,7 @@ function generateCondensation(
     const { width, height } = dimensions[dimensionsIdx];
     const duration = random(minFallDuration, maxFallDuration);
     const animationIdx = randomInteger(1, animations.length) - 1;
-    const delay = random(0, idx % maxDelay);
+    const delay = random(0, maxDelay);
 
     return (
       <Drop
@@ -146,4 +149,32 @@ function generateAnimations(containerHeight: number, type: CondensationType) {
         }
       `;
   });
+}
+
+function generateOpacity(condensationConfig: CondensationConfig) {
+  const { minOpacity, maxOpacity } = condensationConfig;
+
+  return minOpacity != null ? random(minOpacity, maxOpacity || minOpacity) : 1;
+}
+
+function generateHsl(condensationConfig: CondensationConfig) {
+  const {
+    minHue,
+    maxHue,
+    minSaturation,
+    maxSaturation,
+    minLightness,
+    maxLightness,
+  } = condensationConfig;
+  const hueValue = minHue != null ? random(minHue, maxHue || minHue) : 0;
+  const saturationValue =
+    minSaturation != null
+      ? random(minSaturation, maxSaturation || minSaturation)
+      : 0;
+  const lightnessValue =
+    minLightness != null
+      ? random(minLightness, maxLightness || minLightness)
+      : 100;
+
+  return `hsl(${hueValue}, ${saturationValue}%, ${lightnessValue}%)`;
 }

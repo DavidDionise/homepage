@@ -18,7 +18,6 @@ export function Rain(props: WeatherProducerProps) {
 
 const StyledRainDrop = styled.div`
   position: absolute;
-  background-color: white;
   animation: ${(p: StyledCondensationProps) => p.animation}
     ${(p: StyledCondensationProps) => p.duration}s infinite linear
     ${(p: StyledCondensationProps) => p.delay}s;

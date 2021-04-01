@@ -4,11 +4,10 @@ import { config } from "../../config";
 import { Maybe } from "../../types/common";
 import { Breakpoint } from "../../types/ui";
 import { Sky } from "./Sky";
-import { Snow } from "./Snow";
 import { DayFacet, TimeContext } from "./MasterOfTime";
 import cx from "classnames";
-import { Rain } from "./Rain";
 import { Weather } from "../Weather";
+import { mediaQuery } from "../../utils/mediaQuery";
 
 export function Hero() {
   const [containerElement, setContainerElement] = useState<Maybe<HTMLElement>>(
@@ -31,6 +30,7 @@ export function Hero() {
       <SkyContainer>
         <Sky />
       </SkyContainer>
+      <StyledH1 className={isDark ? "night" : ""}>David Dionise</StyledH1>
       {containerElement ? (
         <Weather containerHeight={containerElement.clientHeight} />
       ) : null}
@@ -40,12 +40,6 @@ export function Hero() {
           className={cx({ dark: isDark, firstDay: isFirstDay })}
         />
       </MountainContainer>
-      <TreesContainer>
-        <StyledImage
-          src="trees.png"
-          className={cx({ dark: isDark, firstDay: isFirstDay })}
-        />
-      </TreesContainer>
     </Container>
   );
 }
@@ -58,11 +52,15 @@ const SkyContainer = styled.div`
 
 const Container = styled.div`
   position: relative;
-  max-width: 1680px;
+  width: 100%;
   margin: auto;
-  height: 884px;
+  height: 736px;
   z-index: 0;
-  overflow-x: hidden;
+  overflow: hidden;
+
+  ${mediaQuery(null, Breakpoint.TABLET)} {
+    height: 290px;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -70,15 +68,16 @@ const ImageContainer = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+
+  ${mediaQuery(null, Breakpoint.TABLET)} {
+    width: ${config.ui.heroImageWidths[Breakpoint.MOBILE]}px;
+    top: 28px;
+  }
 `;
 
 const MountainContainer = styled(ImageContainer)`
+  position: absolute;
   z-index: 3;
-`;
-
-const TreesContainer = styled(ImageContainer)`
-  top: 350px;
-  z-index: 4;
 `;
 
 const gettingDark = keyframes`
@@ -101,8 +100,32 @@ const gettingLight = keyframes`
   }
 `;
 
+const StyledH1 = styled.h1`
+  font-family: ${config.ui.fonts.title};
+  font-weight: bolder;
+  position: absolute;
+  z-index: 4;
+  margin: 0;
+  color: ${config.ui.colors.secondary.med};
+  transition: color ${config.time.hourDuration * 3}s;
+
+  font-size: 2.5em;
+  top: 10px;
+
+  &.night {
+    color: ${config.ui.colors.secondary.light};
+  }
+
+  ${mediaQuery(null, Breakpoint.TABLET)} {
+    font-size: 2em;
+    left: 30px;
+    width: 50%;
+  }
+`;
+
 const StyledImage = styled.img`
   width: 100%;
+  line-height: 0;
   &:not(.firstDay) {
     animation: ${gettingLight}
       ${config.time.facetDurations[DayFacet.MORNING] *

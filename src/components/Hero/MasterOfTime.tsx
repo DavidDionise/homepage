@@ -14,7 +14,7 @@ export enum DayFacet {
   NIGHT,
 }
 
-const INITIAL_HOUR = 9;
+const INITIAL_HOUR = 23;
 const INITIAL_FACET = DayFacet.NIGHT;
 
 export const TimeContext: Context<TimeContextType> = createContext<TimeContextType>(

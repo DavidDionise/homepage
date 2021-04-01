@@ -1,0 +1,27 @@
+[
+  {
+    "title": "React YouTube Playlist",
+    "href": "https://github.com/DavidDionise/react-youtube-playlist",
+    "description": "React wrapper around the YouTube iframe API for selcting and playing videos from a YouTube playlist"
+  },
+  {
+    "title": "Flow - Static Type Reflection",
+    "href": "https://github.com/DavidDionise/babel-plugin-flow-type-getter",
+    "description": "Babel plugin that enables access to a classes property types before class instantiation"
+  },
+  {
+    "title": "Material-UI Super Select",
+    "href": "https://github.com/DavidDionise/react-material-ui-super-select#readme",
+    "description": "Wrapper around Material-UI select that adds multi-value select and dynimac option creation"
+  },
+  {
+    "title": "Schema-Llama",
+    "href": "https://www.npmjs.com/package/schema-llama#api",
+    "description": "Run-time type checking for Js ES6 class properties"
+  },
+  {
+    "title": "React Google Maps",
+    "href": "https://github.com/hailtrace/google-react-maps#readme",
+    "description": "React wrapper around the Google Maps Js SDK"
+  }
+]
