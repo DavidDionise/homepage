@@ -7,7 +7,7 @@
   {
     "title": "Flow - Static Type Reflection",
     "href": "https://github.com/DavidDionise/babel-plugin-flow-type-getter",
-    "description": "Babel plugin that enables access to a classes property types before class instantiation"
+    "description": "Babel plugin that enables access to class property types before class instantiation"
   },
   {
     "title": "Material-UI Super Select",
