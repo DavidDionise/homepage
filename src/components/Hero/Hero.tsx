@@ -8,6 +8,7 @@ import { DayFacet, TimeContext } from "./MasterOfTime";
 import cx from "classnames";
 import { Weather } from "../Weather";
 import { mediaQuery } from "../../utils/mediaQuery";
+import mountains from "../../resources/mountains.png";
 
 export function Hero() {
   const [containerElement, setContainerElement] = useState<Maybe<HTMLElement>>(
@@ -36,10 +37,11 @@ export function Hero() {
       ) : null}
       <MountainContainer>
         <StyledImage
-          src="mountains.png"
+          src={mountains}
           className={cx({ dark: isDark, firstDay: isFirstDay })}
         />
       </MountainContainer>
+      <img src="trees.png" />
     </Container>
   );
 }
