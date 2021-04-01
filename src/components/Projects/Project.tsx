@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { AppContext } from "../../App";
 import { config } from "../../config";
 import { Maybe } from "../../types/common";
+import { Breakpoint } from "../../types/ui";
+import { mediaQuery } from "../../utils/mediaQuery";
 
 export type ProjectProps = {
   title: string;
@@ -37,26 +39,36 @@ export function Project(props: ProjectProps) {
   }, [appContext.appRef, hrElement, showHr]);
 
   return (
-    <Container>
-      <TitleContainer>
-        <Title target="_blank" href={props.href}>
-          {props.title}
-        </Title>
-        <StyledHr ref={setHrElement} className={showHr ? "show" : ""} />
-      </TitleContainer>
-      <DescriptionContainer>
-        <DescriptionCopy>{props.description}</DescriptionCopy>
-      </DescriptionContainer>
-    </Container>
+    <OuterContainer>
+      <InnerContainer>
+        <TitleContainer>
+          <Title target="_blank" href={props.href}>
+            {props.title}
+          </Title>
+          <StyledHr ref={setHrElement} className={showHr ? "show" : ""} />
+        </TitleContainer>
+        <DescriptionContainer>
+          <DescriptionCopy>{props.description}</DescriptionCopy>
+        </DescriptionContainer>
+      </InnerContainer>
+    </OuterContainer>
   );
 }
 
-const Container = styled.div`
+const OuterContainer = styled.div`
+  padding: 12px 0;
+`;
+
+const InnerContainer = styled.div`
   width: 50%;
   position: relative;
   border-radius: 8px;
   background-color: #fff;
   padding: 0.5em;
+
+  ${mediaQuery(null, Breakpoint.TABLET)} {
+    width: 100%;
+  }
 
   &::before {
     content: "";

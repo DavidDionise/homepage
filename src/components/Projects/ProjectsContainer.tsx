@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { config } from "../../config";
 import projects from "../../resources/projects.json";
+import { Breakpoint } from "../../types/ui";
+import { mediaQuery } from "../../utils/mediaQuery";
 import { Project, ProjectProps } from "./Project";
 
 export function ProjectsContainer() {
@@ -34,6 +36,14 @@ const StyledHeading = styled.h2`
   color: ${config.ui.colors.primary.med};
   margin: 0;
   font-size: 2em;
+
+  ${mediaQuery(null, Breakpoint.TABLET)} {
+    font-size: 1.5em;
+  }
+
+  ${mediaQuery(Breakpoint.TABLET, Breakpoint.DESKTOP_SMALL)} {
+    font-size: 2em;
+  }
 `;
 
 const AmpersandContainer = styled.span`
@@ -42,7 +52,6 @@ const AmpersandContainer = styled.span`
 
 const ProjectListContainer = styled.div`
   padding-top: 3em;
-  height: 600px; // temp style
   display: flex;
   flex-direction: column;
   justify-content: space-between;

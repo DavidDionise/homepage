@@ -72,7 +72,7 @@ const AppContainer = styled.div`
 `;
 
 const AppFooter = styled.footer`
-  padding: 2em 45%;
+  padding: 1.5em 30%;
   display: flex;
   justify-content: space-around;
 `;

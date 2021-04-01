@@ -64,9 +64,9 @@ export const config: Config = {
       [Breakpoint.DESKTOP_LARGE]: 1440,
     },
     heroImageWidths: {
-      [Breakpoint.MOBILE]: 600,
-      [Breakpoint.TABLET]: 800,
-      [Breakpoint.DESKTOP_SMALL]: 1200,
+      [Breakpoint.MOBILE]: 768,
+      [Breakpoint.TABLET]: 1024,
+      [Breakpoint.DESKTOP_SMALL]: 1440,
       [Breakpoint.DESKTOP_LARGE]: MAX_WIDTH,
     },
     colors: {

@@ -61,6 +61,10 @@ const Container = styled.div`
   ${mediaQuery(null, Breakpoint.TABLET)} {
     height: 290px;
   }
+
+  ${mediaQuery(Breakpoint.TABLET, Breakpoint.DESKTOP_SMALL)} {
+    height: 520px;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -72,6 +76,11 @@ const ImageContainer = styled.div`
   ${mediaQuery(null, Breakpoint.TABLET)} {
     width: ${config.ui.heroImageWidths[Breakpoint.MOBILE]}px;
     top: 28px;
+  }
+
+  ${mediaQuery(Breakpoint.TABLET, Breakpoint.DESKTOP_SMALL)} {
+    width: ${config.ui.heroImageWidths[Breakpoint.TABLET]}px;
+    top: 69px;
   }
 `;
 
@@ -111,6 +120,7 @@ const StyledH1 = styled.h1`
 
   font-size: 2.5em;
   top: 10px;
+  left: 30px;
 
   &.night {
     color: ${config.ui.colors.secondary.light};
@@ -118,8 +128,12 @@ const StyledH1 = styled.h1`
 
   ${mediaQuery(null, Breakpoint.TABLET)} {
     font-size: 2em;
-    left: 30px;
     width: 50%;
+  }
+
+  ${mediaQuery(Breakpoint.TABLET, Breakpoint.DESKTOP_SMALL)} {
+    font-size: 2.5em;
+    top: 30px;
   }
 `;
 
