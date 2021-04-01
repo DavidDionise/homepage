@@ -16,7 +16,7 @@ export function ProjectsContainer() {
       </HeadingContainer>
       <ProjectListContainer>
         {(projects as Array<ProjectProps>).map((props) => (
-          <Project {...props} />
+          <Project key={props.href} {...props} />
         ))}
       </ProjectListContainer>
     </Container>
