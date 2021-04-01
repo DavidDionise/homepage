@@ -71,9 +71,9 @@ export const config: Config = {
     },
     colors: {
       primary: {
-        dark: "hsl(217deg, 31%, 21%)",
-        med: "hsl(224deg 37% 29%)",
-        light: "hsl(217deg, 100%, 87%)",
+        dark: "hsl(221, 44%, 28%)",
+        med: "hsl(220, 44%, 36%)",
+        light: "hsl(210, 66%, 70%)",
       },
       secondary: {
         light: "hsl(308, 96%, 90%)",
